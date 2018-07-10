@@ -3,10 +3,25 @@ package main
 import (
 	"github.com/kataras/iris"
 	"devlife.info/gotutorial/router"
+	"github.com/kataras/iris/middleware/logger"
 )
 
 func main() {
 	app := iris.New()
+
+	/**
+		Logger config
+	 */
+	customLogger := logger.New(logger.Config{
+		Status:             true,
+		IP:                 true,
+		Method:             true,
+		Path:               true,
+		Columns:            true,
+		MessageContextKeys: []string{"logger_message"},
+	})
+	app.Use(customLogger)
+
 	/**
 		Handle error
 	 */
@@ -19,6 +34,14 @@ func main() {
 		}
 		ctx.Writef("(Unexpected) internal server error")
 	})
+
+	app.OnAnyErrorCode(customLogger, func(ctx iris.Context) {
+		errMessage := ctx.Values().GetString("error")
+		ctx.Values().Set("logger_message",
+			"a dynamic message passed to the logs")
+		ctx.Writef("My Custom error page %s", errMessage)
+	})
+
 	/**
 		Log router request
 	 */

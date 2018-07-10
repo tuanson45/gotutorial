@@ -49,6 +49,10 @@ func main() {
 		ctx.Application().Logger().Infof("Begin request for path: %s", ctx.Path())
 		ctx.Next()
 	})
+	/**
+		Router for API
+	 */
 	router.ApiRouter(app)
+
 	app.Run(iris.Addr(":8080"), iris.WithCharset("UTF-8"), iris.WithoutVersionChecker)
 }

@@ -5,7 +5,7 @@ import (
 	"devlife.info/gotutorial/model"
 )
 
-func Get(context context.Context) {
+func All(context context.Context) {
 	doe := model.User{
 		UserName:  "Johndoe",
 		FirstName: "John",
@@ -13,8 +13,12 @@ func Get(context context.Context) {
 		Address:   "Neither FBI knows!!!",
 		Age:       25,
 	}
-
 	context.JSON(doe)
+}
+
+func Get(context context.Context) {
+	userId := context.Params().Get("user_id")
+	context.Text(userId)
 }
 
 func Post(context context.Context) {

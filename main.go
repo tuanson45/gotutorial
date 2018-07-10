@@ -7,7 +7,6 @@ import (
 
 func main() {
 	app := iris.New()
-
 	/**
 		Handle error
 	 */
@@ -18,10 +17,8 @@ func main() {
 			ctx.Writef("Internal server error: %s", errMessage)
 			return
 		}
-
 		ctx.Writef("(Unexpected) internal server error")
 	})
-
 	/**
 		Log router request
 	 */
@@ -29,8 +26,6 @@ func main() {
 		ctx.Application().Logger().Infof("Begin request for path: %s", ctx.Path())
 		ctx.Next()
 	})
-
 	router.ApiRouter(app)
-
 	app.Run(iris.Addr(":8080"), iris.WithCharset("UTF-8"), iris.WithoutVersionChecker)
 }

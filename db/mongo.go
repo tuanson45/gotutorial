@@ -6,14 +6,14 @@ import (
 )
 
 const (
-	SERVER   = "localhost"
+	SERVER   = "localhost:27017"
 	DATABASE = "golang_database"
 )
 
-func Connect() *mgo.Session {
+func Init() (*mgo.Database) {
 	session, err := mgo.Dial(SERVER)
 	if err != nil {
 		log.Fatal(err)
 	}
-	return session
+	return session.DB(DATABASE)
 }

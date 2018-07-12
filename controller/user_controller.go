@@ -3,6 +3,10 @@ package controller
 import (
 	"github.com/kataras/iris/context"
 	"devlife.info/gotutorial/model"
+	"gopkg.in/mgo.v2/bson"
+	"devlife.info/gotutorial/dao"
+	"log"
+	"devlife.info/gotutorial/db"
 )
 
 func All(context context.Context) {
@@ -21,8 +25,17 @@ func Get(context context.Context) {
 	context.Text(userId)
 }
 
-func Post(context context.Context) {
+func PostUser(context context.Context) {
 	var user model.User
+	database := db.Init()
+	userDao := dao.UserDao{DB: database}
 	context.ReadJSON(&user)
-	context.JSON(user)
+	user.ID = bson.NewObjectId()
+	err := userDao.Insert(user)
+	if err != nil {
+		log.Fatal(err)
+		context.Text("err")
+	} else {
+		context.Text("Insert success!")
+	}
 }
